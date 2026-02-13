@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Let's Get Started - Shifu</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -67,7 +72,8 @@
             color: #ff6b6b;
         }
 
-        input, textarea {
+        input,
+        textarea {
             width: 100%;
             padding: 14px 16px;
             background: #0e1829;
@@ -80,11 +86,13 @@
             outline: none;
         }
 
-        input::placeholder, textarea::placeholder {
+        input::placeholder,
+        textarea::placeholder {
             color: #3d5a80;
         }
 
-        input:focus, textarea:focus {
+        input:focus,
+        textarea:focus {
             border-color: #00e5ff;
             box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.12);
         }
@@ -187,9 +195,21 @@
             max-width: 350px;
         }
 
-        .toast.show { transform: translateX(0); }
-        .toast.success { background: #0f5132; color: #a3ffca; border: 1px solid #198754; }
-        .toast.error { background: #5c1a1a; color: #ffa3a3; border: 1px solid #dc3545; }
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #0f5132;
+            color: #a3ffca;
+            border: 1px solid #198754;
+        }
+
+        .toast.error {
+            background: #5c1a1a;
+            color: #ffa3a3;
+            border: 1px solid #dc3545;
+        }
 
         /* Response */
         .response-box {
@@ -207,143 +227,157 @@
         }
 
         @media (max-width: 500px) {
-            .row { flex-direction: column; gap: 0; }
-            .row .form-group { margin-bottom: 20px; }
-            .options-grid { grid-template-columns: 1fr; }
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .row .form-group {
+                margin-bottom: 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="form-container">
-    <h1 class="form-title">Let's Get Started</h1>
-    <p class="form-subtitle">Tell us yourself and what you're looking to achieve.</p>
+    <div class="form-container">
+        <h1 class="form-title">Let's Get Started</h1>
+        <p class="form-subtitle">Tell us yourself and what you're looking to achieve.</p>
 
-    <form id="shifuForm">
-        <div class="row">
+        <form id="shifuForm">
+            <div class="row">
+                <div class="form-group">
+                    <label class="field-label">Name<span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="e.g., Prem kumar" required>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Work Email<span class="required">*</span></label>
+                    <input type="email" id="work_email" placeholder="e.g., prem18@gmail.com" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label class="field-label">Company<span class="required">*</span></label>
+                    <input type="text" id="company" placeholder="e.g., Acme Corporation" required>
+                </div>
+                <div class="form-group">
+                    <label class="field-label">Role</label>
+                    <input type="text" id="role" placeholder="e.g., Head of L&D">
+                </div>
+            </div>
+
             <div class="form-group">
-                <label class="field-label">Name<span class="required">*</span></label>
-                <input type="text" id="name" placeholder="e.g., Prem kumar" required>
+                <p class="looking-for-title">What are you looking for?<span class="required">*</span></p>
+                <div class="options-grid">
+                    <button type="button" class="option-btn" data-value="Request a Demo">Request a Demo</button>
+                    <button type="button" class="option-btn" data-value="Start a Pilot Program">Start a Pilot
+                        Program</button>
+                    <button type="button" class="option-btn" data-value="General Inquiry">General Inquiry</button>
+                    <button type="button" class="option-btn" data-value="Schedule a Briefing">Schedule a
+                        Briefing</button>
+                </div>
+                <input type="hidden" id="looking_for" required>
             </div>
+
             <div class="form-group">
-                <label class="field-label">Work Email<span class="required">*</span></label>
-                <input type="email" id="work_email" placeholder="e.g., prem18@gmail.com" required>
+                <label class="field-label">Tell us about your goals</label>
+                <textarea id="goals"
+                    placeholder="What challenges are you facing? What outcomes are you hoping to achieve?"></textarea>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group">
-                <label class="field-label">Company<span class="required">*</span></label>
-                <input type="text" id="company" placeholder="e.g., Acme Corporation" required>
-            </div>
-            <div class="form-group">
-                <label class="field-label">Role</label>
-                <input type="text" id="role" placeholder="e.g., Head of L&D">
-            </div>
-        </div>
+            <button type="submit" class="submit-btn" id="submitBtn">SUBMIT REQUEST →</button>
+        </form>
 
-        <div class="form-group">
-            <p class="looking-for-title">What are you looking for?<span class="required">*</span></p>
-            <div class="options-grid">
-                <button type="button" class="option-btn" data-value="Request a Demo">Request a Demo</button>
-                <button type="button" class="option-btn" data-value="Start a Pilot Program">Start a Pilot Program</button>
-                <button type="button" class="option-btn" data-value="General Inquiry">General Inquiry</button>
-                <button type="button" class="option-btn" data-value="Schedule a Briefing">Schedule a Briefing</button>
-            </div>
-            <input type="hidden" id="looking_for" required>
-        </div>
+        <div class="response-box" id="responseBox"></div>
+    </div>
 
-        <div class="form-group">
-            <label class="field-label">Tell us about your goals</label>
-            <textarea id="goals" placeholder="What challenges are you facing? What outcomes are you hoping to achieve?"></textarea>
-        </div>
+    <div class="toast" id="toast"></div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">SUBMIT REQUEST →</button>
-    </form>
+    <script>
+        const API_URL = 'https://5c04-2409-40e0-4d-32a7-2d0c-6c0d-264c-ec10.ngrok-free.app/api/shifu';
+        let selectedLookingFor = '';
 
-    <div class="response-box" id="responseBox"></div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-    const API_URL = 'http://localhost:5001/api/shifu';
-    let selectedLookingFor = '';
-
-    // Option button selection
-    document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedLookingFor = btn.dataset.value;
-            document.getElementById('looking_for').value = selectedLookingFor;
-        });
-    });
-
-    // Show toast
-    function showToast(message, type = 'success') {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = `toast ${type} show`;
-        setTimeout(() => toast.classList.remove('show'), 4000);
-    }
-
-    // Show response
-    function showResponse(data) {
-        const box = document.getElementById('responseBox');
-        box.style.display = 'block';
-        box.textContent = JSON.stringify(data, null, 2);
-    }
-
-    // Form submit
-    document.getElementById('shifuForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!selectedLookingFor) {
-            showToast('❌ Please select what you are looking for!', 'error');
-            return;
-        }
-
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.textContent = 'SUBMITTING...';
-
-        const payload = {
-            name: document.getElementById('name').value.trim(),
-            work_email: document.getElementById('work_email').value.trim(),
-            company: document.getElementById('company').value.trim(),
-            role: document.getElementById('role').value.trim(),
-            looking_for: selectedLookingFor,
-            goals: document.getElementById('goals').value.trim()
-        };
-
-        try {
-            const res = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await res.json();
-
-            if (data.success) {
-                showToast('✅ Request submitted successfully!', 'success');
-                showResponse(data);
-                document.getElementById('shifuForm').reset();
+        // Option button selection
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
                 document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-                selectedLookingFor = '';
-            } else {
-                showToast(`❌ ${data.error}`, 'error');
-                showResponse(data);
-            }
-        } catch (err) {
-            showToast(`❌ Connection error: ${err.message}`, 'error');
+                btn.classList.add('selected');
+                selectedLookingFor = btn.dataset.value;
+                document.getElementById('looking_for').value = selectedLookingFor;
+            });
+        });
+
+        // Show toast
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
-        btn.disabled = false;
-        btn.textContent = 'SUBMIT REQUEST →';
-    });
-</script>
+        // Show response
+        function showResponse(data) {
+            const box = document.getElementById('responseBox');
+            box.style.display = 'block';
+            box.textContent = JSON.stringify(data, null, 2);
+        }
+
+        // Form submit
+        document.getElementById('shifuForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!selectedLookingFor) {
+                showToast('❌ Please select what you are looking for!', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'SUBMITTING...';
+
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                work_email: document.getElementById('work_email').value.trim(),
+                company: document.getElementById('company').value.trim(),
+                role: document.getElementById('role').value.trim(),
+                looking_for: selectedLookingFor,
+                goals: document.getElementById('goals').value.trim()
+            };
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    showToast('✅ Request submitted successfully!', 'success');
+                    showResponse(data);
+                    document.getElementById('shifuForm').reset();
+                    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                    selectedLookingFor = '';
+                } else {
+                    showToast(`❌ ${data.error}`, 'error');
+                    showResponse(data);
+                }
+            } catch (err) {
+                showToast(`❌ Connection error: ${err.message}`, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'SUBMIT REQUEST →';
+        });
+    </script>
 
 </body>
+
 </html>
