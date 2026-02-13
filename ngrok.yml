@@ -1,8 +1,0 @@
-authtoken: 31d0d1At5CwUZtq7aJEogKGmkq7_5oypsDJSxcAkD39oKw87B
-tunnels:
-  daskform:
-    proto: http
-    addr: 5000
-  shifu:
-    proto: http
-    addr: 5001
