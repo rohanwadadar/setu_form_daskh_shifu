@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Connect - DaskForm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 30px;
+            background: linear-gradient(145deg, #111111, #0d0d0d);
+            border: 1px solid #222;
+            border-radius: 12px;
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-title span {
+            color: #f0c020;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .field-label {
+            font-size: 11px;
+            color: #f0c020;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .field-label::before {
+            content: '// ';
+            color: #555;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #555;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #f0c020;
+            box-shadow: 0 0 0 2px rgba(240, 192, 32, 0.15);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #f0c020;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #ffda44;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(240, 192, 32, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #0f5132;
+            color: #a3ffca;
+            border: 1px solid #198754;
+        }
+
+        .toast.error {
+            background: #5c1a1a;
+            color: #ffa3a3;
+            border: 1px solid #dc3545;
+        }
+
+        /* Response display */
+        .response-box {
+            margin-top: 20px;
+            padding: 16px;
+            background: #0f1a0f;
+            border: 1px solid #1a3a1a;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #7cfc7c;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1 class="form-title">LET'S <span>CONNECT</span></h1>
+    <p class="form-subtitle">Tell us about your hiring needs and we'll show you Daksh can help you find the right talent.</p>
+
+    <form id="daskForm">
+        <div class="form-group">
+            <label class="field-label">YOUR_EMAIL</label>
+            <input type="email" id="your_email" placeholder="you@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+            <label class="field-label">WHAT_BEST_DESCRIBES_YOU?</label>
+            <input type="text" id="what_best_describes_you" placeholder="Enter your role..." required>
+        </div>
+
+        <div class="form-group">
+            <label class="field-label">WHAT_ARE_YOU_HOPING_TO_ACHIEVE?</label>
+            <input type="text" id="what_are_you_hoping_to_achieve" placeholder="Enter your goal..." required>
+        </div>
+
+        <div class="form-group">
+            <label class="field-label">TELL_US_MORE (OPTIONAL)</label>
+            <textarea id="tell_us_more" placeholder="Any specific challenges or questions you'd like to discuss..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">GET IN TOUCH</button>
+    </form>
+
+    <div class="response-box" id="responseBox"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const API_URL = 'http://localhost:5000/api/daskform';
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // Show API response
+    function showResponse(data) {
+        const box = document.getElementById('responseBox');
+        box.style.display = 'block';
+        box.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // Form submit
+    document.getElementById('daskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'SUBMITTING...';
+
+        const payload = {
+            your_email: document.getElementById('your_email').value.trim(),
+            what_best_describes_you: document.getElementById('what_best_describes_you').value.trim(),
+            what_are_you_hoping_to_achieve: document.getElementById('what_are_you_hoping_to_achieve').value.trim(),
+            tell_us_more: document.getElementById('tell_us_more').value.trim()
+        };
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                showToast('✅ Form submitted successfully!', 'success');
+                showResponse(data);
+                document.getElementById('daskForm').reset();
+            } else {
+                showToast(`❌ ${data.error}`, 'error');
+                showResponse(data);
+            }
+        } catch (err) {
+            showToast(`❌ Connection error: ${err.message}`, 'error');
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'GET IN TOUCH';
+    });
+</script>
+
+</body>
+</html>

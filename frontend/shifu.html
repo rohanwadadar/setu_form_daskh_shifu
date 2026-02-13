@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Get Started - Shifu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b1120;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 540px;
+            padding: 40px 35px;
+            background: linear-gradient(160deg, #111b2e, #0d1525);
+            border: 1px solid #1a2a44;
+            border-radius: 14px;
+        }
+
+        .form-title {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #7a8ba8;
+            margin-bottom: 30px;
+        }
+
+        .row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c8d6e5;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .field-label .required {
+            color: #ff6b6b;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0e1829;
+            border: 1px solid #1e3050;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            outline: none;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #3d5a80;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #00e5ff;
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.12);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* Looking For Section */
+        .looking-for-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #c8d6e5;
+            margin-bottom: 14px;
+        }
+
+        .looking-for-title .required {
+            color: #ff6b6b;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .option-btn {
+            padding: 12px 16px;
+            background: #0e1829;
+            border: 1px solid #1e3050;
+            border-radius: 8px;
+            color: #a0b4cc;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: #00e5ff;
+            color: #fff;
+            background: #12203a;
+        }
+
+        .option-btn.selected {
+            border-color: #00e5ff;
+            color: #00e5ff;
+            background: rgba(0, 229, 255, 0.08);
+            box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #00e5ff, #00c8ff);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #33ecff, #33d4ff);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 25px rgba(0, 229, 255, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            max-width: 350px;
+        }
+
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: #0f5132; color: #a3ffca; border: 1px solid #198754; }
+        .toast.error { background: #5c1a1a; color: #ffa3a3; border: 1px solid #dc3545; }
+
+        /* Response */
+        .response-box {
+            margin-top: 20px;
+            padding: 16px;
+            background: #0a1628;
+            border: 1px solid #152a4a;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #00e5ff;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
+
+        @media (max-width: 500px) {
+            .row { flex-direction: column; gap: 0; }
+            .row .form-group { margin-bottom: 20px; }
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1 class="form-title">Let's Get Started</h1>
+    <p class="form-subtitle">Tell us yourself and what you're looking to achieve.</p>
+
+    <form id="shifuForm">
+        <div class="row">
+            <div class="form-group">
+                <label class="field-label">Name<span class="required">*</span></label>
+                <input type="text" id="name" placeholder="e.g., Prem kumar" required>
+            </div>
+            <div class="form-group">
+                <label class="field-label">Work Email<span class="required">*</span></label>
+                <input type="email" id="work_email" placeholder="e.g., prem18@gmail.com" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label class="field-label">Company<span class="required">*</span></label>
+                <input type="text" id="company" placeholder="e.g., Acme Corporation" required>
+            </div>
+            <div class="form-group">
+                <label class="field-label">Role</label>
+                <input type="text" id="role" placeholder="e.g., Head of L&D">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p class="looking-for-title">What are you looking for?<span class="required">*</span></p>
+            <div class="options-grid">
+                <button type="button" class="option-btn" data-value="Request a Demo">Request a Demo</button>
+                <button type="button" class="option-btn" data-value="Start a Pilot Program">Start a Pilot Program</button>
+                <button type="button" class="option-btn" data-value="General Inquiry">General Inquiry</button>
+                <button type="button" class="option-btn" data-value="Schedule a Briefing">Schedule a Briefing</button>
+            </div>
+            <input type="hidden" id="looking_for" required>
+        </div>
+
+        <div class="form-group">
+            <label class="field-label">Tell us about your goals</label>
+            <textarea id="goals" placeholder="What challenges are you facing? What outcomes are you hoping to achieve?"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">SUBMIT REQUEST →</button>
+    </form>
+
+    <div class="response-box" id="responseBox"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const API_URL = 'http://localhost:5001/api/shifu';
+    let selectedLookingFor = '';
+
+    // Option button selection
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedLookingFor = btn.dataset.value;
+            document.getElementById('looking_for').value = selectedLookingFor;
+        });
+    });
+
+    // Show toast
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // Show response
+    function showResponse(data) {
+        const box = document.getElementById('responseBox');
+        box.style.display = 'block';
+        box.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // Form submit
+    document.getElementById('shifuForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!selectedLookingFor) {
+            showToast('❌ Please select what you are looking for!', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'SUBMITTING...';
+
+        const payload = {
+            name: document.getElementById('name').value.trim(),
+            work_email: document.getElementById('work_email').value.trim(),
+            company: document.getElementById('company').value.trim(),
+            role: document.getElementById('role').value.trim(),
+            looking_for: selectedLookingFor,
+            goals: document.getElementById('goals').value.trim()
+        };
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                showToast('✅ Request submitted successfully!', 'success');
+                showResponse(data);
+                document.getElementById('shifuForm').reset();
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                selectedLookingFor = '';
+            } else {
+                showToast(`❌ ${data.error}`, 'error');
+                showResponse(data);
+            }
+        } catch (err) {
+            showToast(`❌ Connection error: ${err.message}`, 'error');
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'SUBMIT REQUEST →';
+    });
+</script>
+
+</body>
+</html>
