@@ -2,13 +2,21 @@ from shifu.app import db
 from datetime import datetime, timezone
 
 
-VALID_LOOKING_FOR = [
-    'Request a Demo',
-    'Start a Pilot Program',
-    'General Inquiry',
-    'Schedule a Briefing',
-]
+class ShifuOption(db.Model):
+    """
+    Stores valid options for the 'What are you looking for?' field.
+    """
+    __tablename__ = 'shifu_options'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    label = db.Column(db.String(255), nullable=False, unique=True)
+    is_active = db.Column(db.Boolean, default=True)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'label': self.label,
+            'is_active': self.is_active
+        }
 
 class ShifuForm(db.Model):
     """

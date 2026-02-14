@@ -303,15 +303,40 @@
         const API_URL = 'http://localhost:5001/api/shifu';
         let selectedLookingFor = '';
 
-        // Option button selection
-        document.querySelectorAll('.option-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                selectedLookingFor = btn.dataset.value;
-                document.getElementById('looking_for').value = selectedLookingFor;
-            });
-        });
+        // Fetch options from backend
+        async function loadOptions() {
+            try {
+                const res = await fetch(`${API_URL}/options`);
+                const result = await res.json();
+
+                if (result.success) {
+                    const grid = document.querySelector('.options-grid');
+                    grid.innerHTML = ''; // Clear existing
+
+                    result.data.forEach(option => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'option-btn';
+                        btn.textContent = option.label;
+                        btn.dataset.value = option.label;
+
+                        btn.addEventListener('click', () => {
+                            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                            btn.classList.add('selected');
+                            selectedLookingFor = btn.dataset.value;
+                            document.getElementById('looking_for').value = selectedLookingFor;
+                        });
+
+                        grid.appendChild(btn);
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load options:', err);
+            }
+        }
+
+        // Initialize options on load
+        loadOptions();
 
         // Show toast
         function showToast(message, type = 'success') {

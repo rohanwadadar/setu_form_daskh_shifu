@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from shifu.app import db
-from shifu.model import ShifuForm, VALID_LOOKING_FOR
+from shifu.model import ShifuForm, ShifuOption
 
 shifu_bp = Blueprint('shifu', __name__)
 
@@ -32,12 +32,14 @@ def submit_form():
                 'error': f'Missing required fields: {", ".join(missing)}'
             }), 400
 
-        # Validate looking_for value
+        # Validate looking_for value against DB
         looking_for = data['looking_for'].strip()
-        if looking_for not in VALID_LOOKING_FOR:
+        valid_option = ShifuOption.query.filter_by(label=looking_for, is_active=True).first()
+        
+        if not valid_option:
             return jsonify({
                 'success': False,
-                'error': f'Invalid "looking_for". Must be one of: {", ".join(VALID_LOOKING_FOR)}'
+                'error': f'Invalid or inactive "looking_for" option: {looking_for}'
             }), 400
 
         entry = ShifuForm(
@@ -112,10 +114,11 @@ def update_form(id):
             entry.role = data['role'].strip() or None
         if 'looking_for' in data:
             looking_for = data['looking_for'].strip()
-            if looking_for not in VALID_LOOKING_FOR:
+            valid_option = ShifuOption.query.filter_by(label=looking_for, is_active=True).first()
+            if not valid_option:
                 return jsonify({
                     'success': False,
-                    'error': f'Invalid "looking_for". Must be one of: {", ".join(VALID_LOOKING_FOR)}'
+                    'error': f'Invalid or inactive "looking_for" option: {looking_for}'
                 }), 400
             entry.looking_for = looking_for
         if 'goals' in data:
@@ -153,4 +156,16 @@ def delete_form(id):
 
     except Exception as e:
         db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+# ─── 6) GET ALL OPTIONS (GET) ───────────────────────────
+@shifu_bp.route('/options', methods=['GET'])
+def get_options():
+    """Get all active form options."""
+    try:
+        options = ShifuOption.query.filter_by(is_active=True).all()
+        return jsonify({
+            'success': True,
+            'data': [o.to_dict() for o in options]
+        }), 200
+    except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500

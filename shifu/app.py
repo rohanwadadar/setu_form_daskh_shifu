@@ -20,8 +20,23 @@ CORS(app)
 from shifu.controller import shifu_bp
 app.register_blueprint(shifu_bp, url_prefix='/api/shifu')
 
-# Create tables
+# Create tables and seed data
 with app.app_context():
-    from shifu.model import ShifuForm  # noqa: F401
+    from shifu.model import ShifuForm, ShifuOption
     db.create_all()
-    print("[OK] Table 'shifu_form' created in PostgreSQL!")
+    
+    # SEED INITIAL OPTIONS
+    initial_options = [
+        'Request a Demo',
+        'Start a Pilot Program',
+        'General Inquiry',
+        'Schedule a Briefing'
+    ]
+    
+    for opt_label in initial_options:
+        exists = ShifuOption.query.filter_by(label=opt_label).first()
+        if not exists:
+            db.session.add(ShifuOption(label=opt_label))
+    
+    db.session.commit()
+    print("[OK] Shifu tables created and data seeded!")
